@@ -1546,7 +1546,7 @@ const DADOS = {
 // ══════════════════════════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════════════════════════
-const DIAS_LABEL = ['Sab 22/02','Dom 01/03','Seg 02/03','Ter 03/03','Qua 04/03','Qui 05/03','Sex 06/03','Sab 07/03','Dom 08/03','Seg 09/03','Ter 10/03','Qua 11/03','Qui 12/03','Sex 13/03','Sab 14/03','Dom 15/03','Seg 16/03','Ter 17/03','Qua 18/03','Qui 19/03','Sex 20/03','Sab 21/03','Dom 22/03','Seg 23/03','Ter 24/03','Qua 25/03','Qui 26/03','Sex 27/03','Sab 28/03','Dom 29/03','Seg 30/03'];
+const DIAS_LABEL = ['22/02','01/03','02/03','03/03','04/03','05/03','06/03','07/03','08/03','09/03','10/03','11/03','12/03','13/03','14/03','15/03','16/03','17/03','18/03','19/03','20/03','21/03','22/03','23/03','24/03','25/03','26/03','27/03','28/03','29/03','30/03','31/03','01/04'];
 const SEMANAS_DIESEL = ['01/03–07/03','08/03–14/03','10/03–16/03'];
 let chartInstances = {};
 
@@ -1985,15 +1985,12 @@ function renderEstado(estado){
       </div>
     </div>
     <div class="charts-row">
-      <div class="chart-card full" style="height:260px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
-          <div>
-            <div class="ct">Custo de Frete — ${estado.capital.nome} · ${getEquip(equipAtivo).icone} ${getEquip(equipAtivo).nome} (R$/100km)</div>
+      <div class="chart-card full" style="height:340px">
             <div class="cs">R$/100km · 22/02 a 01/04/2026 · <span style="color:#ffd166">Alta: +R$ ${((freteEquip(estado.serie[4],getEquip(equipAtivo))-freteEquip(estado.serie[0],getEquip(equipAtivo)))/100).toFixed(3).replace('.',',')}/km (+${((estado.serie[4]-estado.serie[0])/estado.serie[0]*100).toFixed(1)}%)</span></div>
           </div>
           <button onclick="exportCSV('${estado.id}','capital','${estado.capital.nome}')" style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.35);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background .15s" onmouseover="this.style.background='rgba(0,212,170,.18)'" onmouseout="this.style.background='rgba(0,212,170,.08)'">⬇ Exportar CSV</button>
         </div>
-        <div class="cw" style="height:200px"><canvas id="chart-${estado.id}-capital-linha"></canvas></div>
+        <div class="cw" style="height:280px"><canvas id="chart-${estado.id}-capital-linha"></canvas></div>
       </div>
     </div>
   </div>
@@ -2015,7 +2012,7 @@ function renderEstado(estado){
         </div>
       </div>
       <div class="charts-row">
-        <div class="chart-card full" style="height:260px">
+        <div class="chart-card full" style="height:340px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px">
             <div>
               <div class="ct">Custo de Frete — ${rm.nome} · ${getEquip(equipAtivo).icone} ${getEquip(equipAtivo).nome} (R$/100km)</div>
@@ -2023,7 +2020,7 @@ function renderEstado(estado){
             </div>
             <button onclick="exportCSV('${estado.id}','rm${i}','${rm.nome}')" style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.35);color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background .15s" onmouseover="this.style.background='rgba(0,212,170,.18)'" onmouseout="this.style.background='rgba(0,212,170,.08)'">⬇ Exportar CSV</button>
           </div>
-          <div class="cw" style="height:200px"><canvas id="chart-${estado.id}-rm${i}-linha"></canvas></div>
+          <div class="cw" style="height:280px"><canvas id="chart-${estado.id}-rm${i}-linha"></canvas></div>
         </div>
       </div>
     </div>
@@ -2032,91 +2029,231 @@ function renderEstado(estado){
 }
 
 function initChartsEstado(estado){
+  // Helper: só mostra datalabel em pontos relevantes (1º, último, pico, vale, viradas grandes)
+  function shouldShowLabel(i, s){
+    const n = s.length;
+    if(i===0||i===n-1) return true;
+    const delta = s[i]-s[i-1];
+    const pct = Math.abs(delta/s[i-1]);
+    // Mostrar se variação > 0.8% ou se é máximo/mínimo local
+    if(pct >= 0.008) return true;
+    const isLocalMax = s[i]>s[i-1] && s[i]>=s[i+1];
+    const isLocalMin = s[i]<s[i-1] && s[i]<=s[i+1];
+    return isLocalMax || isLocalMin;
+  }
+
   const COPTS = {
-    responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false},tooltip:{backgroundColor:'#111827',borderColor:'#1e2d42',borderWidth:1,titleColor:'#6b7a9a',bodyColor:'#e8edf5',titleFont:{family:'IBM Plex Mono',size:10},bodyFont:{family:'IBM Plex Mono',size:11}}},
-    scales:{x:{grid:{color:'#1e2d42'},ticks:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:10}}},y:{grid:{color:'#1e2d42'},ticks:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:11},callback:v=>'R$'+v.toFixed(2)}}}
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:'#111827',borderColor:'#1e2d42',borderWidth:1,
+        titleColor:'#8898aa',bodyColor:'#e8edf5',padding:10,
+        titleFont:{family:'IBM Plex Mono',size:10},
+        bodyFont:{family:'IBM Plex Mono',size:12,weight:'bold'},
+        callbacks:{
+          title: items => DIAS_LABEL[items[0].dataIndex],
+          label: c => ` R$ ${(c.parsed.y/100).toFixed(4)}/km`
+        }
+      }
+    },
+    scales:{
+      x:{
+        grid:{color:'rgba(30,45,66,.7)',lineWidth:1},
+        ticks:{
+          color:'#6b7a9a',font:{family:'IBM Plex Mono',size:9},
+          maxRotation:50, minRotation:40,
+          maxTicksLimit:12,
+          autoSkip:true
+        },
+        border:{color:'#1e2d42'}
+      },
+      y:{
+        grid:{color:'rgba(30,45,66,.7)',lineWidth:1},
+        ticks:{
+          color:'#8898aa',font:{family:'IBM Plex Mono',size:10},
+          callback:v=>'R$ '+(v/100).toFixed(3)+'/km',
+          maxTicksLimit:6
+        },
+        border:{color:'#1e2d42'}
+      }
+    }
   };
 
-  // Capital — linha
+  // ── Gráfico Capital ──
   const cId = `chart-${estado.id}-capital-linha`;
   destroyChart(cId);
+  const serieCapital = estado.serie.map(v=>+(freteEquip(v,getEquip(equipAtivo))).toFixed(2));
+  const valMin = Math.min(...serieCapital), valMax = Math.max(...serieCapital);
+  const yPad = (valMax-valMin)*0.25 || 0.5;
+
   chartInstances[cId] = new Chart(document.getElementById(cId).getContext('2d'),{
     type:'line',
     plugins:[ChartDataLabels],
-    data:{labels:DIAS_LABEL,datasets:[{
-      label:estado.capital.nome,data:estado.serie.map(v=>+( freteEquip(v,getEquip(equipAtivo)) ).toFixed(2)),
-      borderColor:estado.corEstado,backgroundColor:estado.corEstado+'22',
-      borderWidth:2.5,pointRadius:5,pointBackgroundColor:estado.corEstado,tension:.35,fill:true
+    data:{labels:DIAS_LABEL, datasets:[{
+      label: estado.capital.nome,
+      data: serieCapital,
+      borderColor: estado.corEstado,
+      backgroundColor: estado.corEstado+'28',
+      borderWidth: 2.5,
+      pointRadius: ctx => shouldShowLabel(ctx.dataIndex, serieCapital) ? 5 : 2,
+      pointHoverRadius: 7,
+      pointBackgroundColor: ctx => {
+        const i=ctx.dataIndex, s=serieCapital;
+        if(i===0) return estado.corEstado;
+        return s[i]>s[i-1]?'#ff4d6d':'#00d4aa';
+      },
+      pointBorderColor: '#111827',
+      pointBorderWidth: 1.5,
+      tension: 0.3, fill: true
     }]},
     options:{...COPTS,
-      layout:{padding:{top:36,right:20,bottom:8,left:8}},
+      layout:{padding:{top:42,right:24,bottom:4,left:8}},
       plugins:{...COPTS.plugins,
-        tooltip:{...COPTS.plugins.tooltip,callbacks:{label:c=>` R$ ${(c.parsed.y/100).toFixed(3)}/km`}},
         datalabels:{
-          align:'top',anchor:'end',offset:6,
-          formatter:(val,ctx)=>{
-            const i=ctx.dataIndex,s=ctx.dataset.data;
-            const price='R$'+(val/100).toFixed(3);
-            if(i===0) return price;
-            const delta=val-s[i-1],pct=((delta/s[i-1])*100).toFixed(2);
-            const sign=delta>=0?'+':'-';
-            return price+'\n'+sign+(Math.abs(delta)/100).toFixed(3)+'/km ('+sign+Math.abs(pct)+'%)';
+          display: ctx => shouldShowLabel(ctx.dataIndex, serieCapital),
+          align: ctx => {
+            const i=ctx.dataIndex, s=serieCapital, n=s.length;
+            if(i===0) return 'right';
+            if(i===n-1) return 'left';
+            return s[i]>=s[i-1]?'top':'bottom';
           },
-          color:ctx=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'#e8edf5':s[i]>=s[i-1]?'#ff6b7a':'#00d4aa';},
-          backgroundColor:ctx=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'rgba(17,24,39,.92)':s[i]>=s[i-1]?'rgba(255,77,109,.18)':'rgba(0,212,170,.18)';},
-          borderColor:ctx=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'#1e2d42':s[i]>=s[i-1]?'rgba(255,77,109,.5)':'rgba(0,212,170,.5)';},
-          borderWidth:1,borderRadius:3,
-          padding:{top:4,bottom:4,left:6,right:6},
-          font:{family:'IBM Plex Mono',size:9,weight:'bold'}
+          anchor: ctx => {
+            const i=ctx.dataIndex, s=serieCapital;
+            return (i===0||s[i]>=s[i-1])?'end':'start';
+          },
+          offset: 6,
+          formatter:(val,ctx)=>{
+            const i=ctx.dataIndex, s=serieCapital;
+            const price = 'R$'+(val/100).toFixed(4);
+            if(i===0) return price;
+            const delta=val-s[i-1], pct=((delta/s[i-1])*100);
+            const sign=delta>=0?'+':'';
+            return price+'\n'+sign+(delta/100).toFixed(4)+' ('+sign+pct.toFixed(1)+'%)';
+          },
+          color: ctx=>{
+            const i=ctx.dataIndex, s=serieCapital;
+            if(i===0||i===s.length-1) return '#e8edf5';
+            return s[i]>=s[i-1]?'#ff8099':'#00d4aa';
+          },
+          backgroundColor: ctx=>{
+            const i=ctx.dataIndex, s=serieCapital;
+            if(i===0||i===s.length-1) return 'rgba(17,24,39,.92)';
+            return s[i]>=s[i-1]?'rgba(255,77,109,.22)':'rgba(0,212,170,.22)';
+          },
+          borderColor: ctx=>{
+            const i=ctx.dataIndex, s=serieCapital;
+            if(i===0||i===s.length-1) return '#2a3a52';
+            return s[i]>=s[i-1]?'rgba(255,77,109,.5)':'rgba(0,212,170,.5)';
+          },
+          borderWidth:1, borderRadius:4,
+          padding:{top:4,bottom:4,left:7,right:7},
+          font:{family:'IBM Plex Mono',size:9,weight:'bold'},
+          textAlign:'center'
         }
+      },
+      scales:{...COPTS.scales,
+        y:{...COPTS.scales.y, min:+(valMin-yPad).toFixed(2), max:+(valMax+yPad).toFixed(2)}
       }
     }
   });
 
 
-  // RMs
+  // ── Gráficos RMs ──
   estado.rms.forEach((rm,i)=>{
     const lId=`chart-${estado.id}-rm${i}-linha`;
     destroyChart(lId);
-    // Gera série da RM baseada no frete_base + variação
     const serieRm = estado.serie.map(v=>+(freteEquip(v*(rm.frete/estado.frete_base), getEquip(equipAtivo))).toFixed(2));
+    const serieRef = estado.serie.map(v=>+(freteEquip(v, getEquip(equipAtivo))).toFixed(2));
+    const rmMin = Math.min(...serieRm), rmMax = Math.max(...serieRm);
+    const rmPad = (rmMax-rmMin)*0.25 || 0.5;
+
     chartInstances[lId] = new Chart(document.getElementById(lId).getContext('2d'),{
       type:'line',
       plugins:[ChartDataLabels],
-      data:{labels:DIAS_LABEL,datasets:[
-        {label:rm.nome,data:serieRm,borderColor:'#4c9eff',backgroundColor:'#4c9eff22',borderWidth:2,pointRadius:5,pointBackgroundColor:'#4c9eff',tension:.35,fill:true,
+      data:{labels:DIAS_LABEL, datasets:[
+        {
+          label: rm.nome,
+          data: serieRm,
+          borderColor:'#4c9eff', backgroundColor:'#4c9eff28',
+          borderWidth:2.5,
+          pointRadius: ctx => shouldShowLabel(ctx.dataIndex, serieRm) ? 5 : 2,
+          pointHoverRadius: 7,
+          pointBackgroundColor: ctx => {
+            const ii=ctx.dataIndex, s=serieRm;
+            if(ii===0) return '#4c9eff';
+            return s[ii]>s[ii-1]?'#ff4d6d':'#00d4aa';
+          },
+          pointBorderColor:'#111827', pointBorderWidth:1.5,
+          tension:.3, fill:true,
           datalabels:{
-            align:'top',anchor:'end',offset:4,
-            formatter:(val,ctx)=>{
-              const i=ctx.dataIndex, s=ctx.dataset.data;
-              const price='R$'+(val/100).toFixed(3);
-              if(i===0) return price;
-              const delta=val-s[i-1], pct=((delta/s[i-1])*100).toFixed(2);
-              const sign=delta>=0?'+':'-';
-              return price+'\n'+sign+(Math.abs(delta)/100).toFixed(3)+' ('+sign+Math.abs(pct)+'%)';
+            display: ctx => shouldShowLabel(ctx.dataIndex, serieRm),
+            align: ctx => {
+              const ii=ctx.dataIndex, s=serieRm, n=s.length;
+              if(ii===0) return 'right';
+              if(ii===n-1) return 'left';
+              return s[ii]>=s[ii-1]?'top':'bottom';
             },
-            color:(ctx)=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'#e8edf5':s[i]>=s[i-1]?'#ff4d6d':'#00d4aa';},
-            backgroundColor:(ctx)=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'rgba(30,45,66,.9)':s[i]>=s[i-1]?'rgba(255,77,109,.2)':'rgba(0,212,170,.2)';},
-            borderColor:(ctx)=>{const i=ctx.dataIndex,s=ctx.dataset.data;return i===0?'#1e2d42':s[i]>=s[i-1]?'rgba(255,77,109,.6)':'rgba(0,212,170,.6)';},
-            borderWidth:1,borderRadius:3,padding:{top:4,bottom:4,left:6,right:6},
-            font:{family:'IBM Plex Mono',size:9,weight:'bold'}
+            anchor: ctx => {
+              const ii=ctx.dataIndex, s=serieRm;
+              return (ii===0||s[ii]>=s[ii-1])?'end':'start';
+            },
+            offset:6,
+            formatter:(val,ctx)=>{
+              const ii=ctx.dataIndex, s=serieRm;
+              const price='R$'+(val/100).toFixed(4);
+              if(ii===0) return price;
+              const delta=val-s[ii-1], pct=((delta/s[ii-1])*100);
+              const sign=delta>=0?'+':'';
+              return price+'\n'+sign+(delta/100).toFixed(4)+' ('+sign+pct.toFixed(1)+'%)';
+            },
+            color: ctx=>{
+              const ii=ctx.dataIndex, s=serieRm;
+              if(ii===0||ii===s.length-1) return '#e8edf5';
+              return s[ii]>=s[ii-1]?'#ff8099':'#00d4aa';
+            },
+            backgroundColor: ctx=>{
+              const ii=ctx.dataIndex, s=serieRm;
+              if(ii===0||ii===s.length-1) return 'rgba(17,24,39,.92)';
+              return s[ii]>=s[ii-1]?'rgba(255,77,109,.22)':'rgba(0,212,170,.22)';
+            },
+            borderColor: ctx=>{
+              const ii=ctx.dataIndex, s=serieRm;
+              if(ii===0||ii===s.length-1) return '#2a3a52';
+              return s[ii]>=s[ii-1]?'rgba(255,77,109,.5)':'rgba(0,212,170,.5)';
+            },
+            borderWidth:1, borderRadius:4,
+            padding:{top:4,bottom:4,left:7,right:7},
+            font:{family:'IBM Plex Mono',size:9,weight:'bold'},
+            textAlign:'center'
           }
         },
-        {label:estado.capital.nome+' (ref)',data:estado.serie.map(v=>+(freteEquip(v,getEquip(equipAtivo))).toFixed(2)),borderColor:estado.corEstado+'66',borderWidth:1.5,borderDash:[4,3],pointRadius:2,tension:.35,fill:false,
+        {
+          label: estado.capital.nome+' (ref.)',
+          data: serieRef,
+          borderColor: estado.corEstado+'88',
+          borderWidth:1.5, borderDash:[5,4],
+          pointRadius:0, pointHoverRadius:4,
+          tension:.3, fill:false,
           datalabels:{display:false}
         }
       ]},
       options:{...COPTS,
-        layout:{padding:{top:32,right:16,bottom:8,left:8}},
+        layout:{padding:{top:42,right:24,bottom:4,left:8}},
         plugins:{...COPTS.plugins,
-          legend:{display:true,labels:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:10},boxWidth:10}},
-          tooltip:{...COPTS.plugins.tooltip,callbacks:{label:c=>` ${c.dataset.label}: R$ ${(c.parsed.y/100).toFixed(3)}/km`}}
+          legend:{
+            display:true,
+            labels:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:10},boxWidth:12,padding:14,
+              filter: item => item.datasetIndex===1
+            }
+          }
+        },
+        scales:{...COPTS.scales,
+          y:{...COPTS.scales.y, min:+(rmMin-rmPad).toFixed(2), max:+(rmMax+rmPad).toFixed(2)}
         }
       }
     });
-
-
   });
 
   // Diesel S-10 charts — capital + RMs (after DOM is ready)
@@ -2652,10 +2789,10 @@ function renderGraficoDiesel(canvasId, dieselLocal, nomePraca, corPraca){
         }
       },
       scales:{
-        x:{ grid:{color:'#1e2d42'}, ticks:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:9},maxRotation:45} },
+        x:{ grid:{color:'#1e2d42'}, ticks:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:9},maxRotation:45, maxTicksLimit:10, autoSkip:true} },
         y:{ grid:{color:'#1e2d42'}, ticks:{color:'#6b7a9a',font:{family:'IBM Plex Mono',size:10},
           callback:v=>'R$ '+v.toFixed(2).replace('.',',')},
-          min:5.80, max:7.30 }
+          suggestedMin:5.50 }
       }
     }
   });
