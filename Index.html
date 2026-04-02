@@ -80,7 +80,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
 .chip-y{border-color:#ffd166;color:#ffd166;background:rgba(255,209,102,.07)}
 
 /* ── DIESEL CARDS ── */
-.diesel-strip{display:grid;grid-template-columns:repeat(5,1fr);
+.diesel-strip{display:grid;grid-template-columns:repeat(7,1fr);
   gap:1px;background:var(--border);border-top:3px solid #ff6b35;
   border-bottom:1px solid var(--border)}
 .dc{background:var(--surface2);padding:var(--p12) var(--p16)}
@@ -226,7 +226,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
 .kg-pill.sel{background:var(--accent);border-color:var(--accent);color:#0a0f1a;font-weight:500}
 
 @media(max-width:900px){
-  .diesel-strip,.overview-grid{grid-template-columns:repeat(2,1fr)}
+  .diesel-strip,.overview-grid{grid-template-columns:repeat(3,1fr)}
   .charts-row{grid-template-columns:1fr}
   .chart-card.full{grid-column:1}
   .local-grid{grid-template-columns:1fr 1fr}
@@ -262,7 +262,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
   <div>🚨</div>
   <div class="alerta-txt">
     <div class="t">🔴 NOVO ANP 27/03 — Diesel S-10 sobe pela 4ª semana seguida: R$7,57/L (+3,0%) · Acumulado +24,3% desde 28/fev · Gasolina R$6,78/L (+1,9%)</div>
-    <div class="s">Diesel S-10: <strong>R$ 7,57/L</strong> (ANP 22–28/03) · +3,0% vs semana anterior · Alta consecutiva 4ª semana · Gasolina: R$6,78/L · Ourinhos-SP: pico R$9,99/L · 3.181 postos fiscalizados desde 09/03 · ANP regulamentou MP 1.340/2026 (Preço de Referência) · Próx. ANP: <strong>04/04/2026</strong></div>
+    <div class="s">Diesel S-10: <strong>R$ 7,57/L</strong> (ANP 22–28/03) · IPTL/Ticket Log: <strong>R$ 7,10/L</strong> média março (21k postos) · Brent: <strong>~US$ 101/barril</strong> (era US$70 pré-guerra) · Petrobras: sem novo reajuste · Petrobras estuda autossuficiência em diesel até 2031 · Próx. ANP: <strong>04/04/2026</strong></div>
   </div>
   <div class="chips">
     <div class="chip chip-r">S-10 R$7,57/L · +24,3% desde 28/fev</div>
@@ -277,7 +277,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
   <div class="dc"><div class="dc-label">⛽ Diesel S-10 · Nacional</div><div class="dc-val">R$ 7,57 <small>/L</small></div><div class="dc-sub red">▲ +3,0% · ANP 22–28/03 · 4ª alta seguida</div></div>
   <div class="dc"><div class="dc-label">🏭 Petrobras → Distribuidoras</div><div class="dc-val">R$ 3,65 <small>/L</small></div><div class="dc-sub org">Privados cobram 60–75% acima · Rússia menor prêmio</div></div>
   <div class="dc"><div class="dc-label">📋 ANTT SUROC nº4 · MP 1.340/2026</div><div class="dc-val" style="color:#ffd166">R$ 7,57 <small>/L</small></div><div class="dc-sub org">Preço de Referência regulamentado 27/03</div></div>
-  <div class="dc"><div class="dc-label">📈 Acumulado S-10 · 22/02→01/04</div><div class="dc-val" style="color:#ff4d6d">+R$ 1,18 <small>/L</small></div><div class="dc-sub red">▲ +24,3% em 39 dias · Gasolina R$6,78/L</div></div>
+  <div class="dc"><div class="dc-label">📈 Acumulado S-10 · 22/02→02/04</div><div class="dc-val" style="color:#ff4d6d">+R$ 1,18 <small>/L</small></div><div class="dc-sub red">▲ +24,3% em 39 dias · Gasolina R$6,78/L</div></div>
+  <div class="dc"><div class="dc-label">🔍 IPTL · Ticket Log (até 27/03)</div><div class="dc-val" style="color:#ffd166">R$ 7,10 <small>/L</small></div><div class="dc-sub yel">S-10 média março · +13,6% vs fev · 21k postos</div></div>
+  <div class="dc"><div class="dc-label">🛢 Petróleo Brent · 02/04/2026</div><div class="dc-val" style="color:#c77dff">US$ 101 <small>/barril</small></div><div class="dc-sub" style="color:#c77dff">▲ +44% desde pré-guerra (US$70) · ICE Londres</div></div>
 </div>
 
 <!-- PAINEL DIESEL — CENTAVOS POR DIA -->
@@ -1012,7 +1014,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
   <div class="footer-note">
     <strong>Fontes:</strong> ANTTLog · ANP Levantamento Semanal (22–28/03/2026) · Petrobras (reajuste 14/03/2026) · ANTT Portaria SUROC nº4/2026 (20/03/2026)<br>
     Diesel S-10: R$ 7,57/L (▲+3,0%) · Diesel B: R$ 7,49/L (▲+3,0%) · Gasolina: R$ 6,78/L (▲+1,9%) · Boletim gerado em <strong>02/04/2026</strong> · Uso Interno<br>
-    <span style="color:#ff6b35;font-size:10px">⚠ 27/03 ANP: Diesel S-10 sobe pela 4ª semana seguida → R$7,57/L (+3,0%) · Acumulado +24,3% desde 28/fev · Gasolina R$6,78/L · Pico R$9,99/L em Ourinhos-SP · 3.181 postos fiscalizados · 02/04: Aguardando novo levantamento ANP (semana 29/03–04/04, divulgação prevista 04/04) · Diesel estabilizado em R$7,57/L (Agência iNFRA/ANP)</span>
+    <span style="color:#ff6b35;font-size:10px">⚠ 27/03 ANP: Diesel S-10 sobe pela 4ª semana seguida → R$7,57/L (+3,0%) · Acumulado +24,3% desde 28/fev · Gasolina R$6,78/L · Pico R$9,99/L em Ourinhos-SP · 3.181 postos fiscalizados · 02/04: IPTL/Ticket Log aponta leve acomodação no fim de março · Brent ~US$101/barril · Próx. levantamento ANP previsto 04/04/2026 · Projeção intradiária: R$7,53–7,57/L</span>
     <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center">
       <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">🔗 Fontes Oficiais:</span>
       <a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/levantamento-de-precos-de-combustiveis-ultimas-semanas-pesquisadas" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:var(--accent);text-decoration:none;border:1px solid rgba(0,212,170,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(0,212,170,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">ANP · Levantamento Semanal</a>
@@ -1023,11 +1025,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--ff-body);
       <a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/arq-sintese-semanal/2026/sintese-precos-02.pdf" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#ff6b35;text-decoration:none;border:1px solid rgba(255,107,53,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(255,107,53,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">ANP · Síntese 02/2026 (PDF)</a>
       <a href="https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/precos-revenda-e-de-distribuicao-combustiveis/serie-historica-do-levantamento-de-precos" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#ffd166;text-decoration:none;border:1px solid rgba(255,209,102,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(255,209,102,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">ANP · Série Histórica</a>
       <a href="https://anttlog.antt.gov.br/" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#ffd166;text-decoration:none;border:1px solid rgba(255,209,102,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(255,209,102,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">ANTTLog · Fretes</a>
+      <a href="https://www.ticketlog.com.br/iptl/" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#4c9eff;text-decoration:none;border:1px solid rgba(76,158,255,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(76,158,255,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">🔍 IPTL · Ticket Log (intradiário)</a>
+      <a href="https://transportemoderno.com.br/2026/03/31/guerra-no-oriente-medio-e-petroleo-em-alta-fazem-preco-do-diesel-subir-ate-13-em-marco/" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#4c9eff;text-decoration:none;border:1px solid rgba(76,158,255,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(76,158,255,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">📊 Veloe/Fipe · Monitor de Preços</a>
       <a href="https://www.poder360.com.br/poder-energia/guerra-faz-diesel-subir-mais-de-r-1-em-13-estados-diz-anp/" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#ff4d6d;text-decoration:none;border:1px solid rgba(255,77,109,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(255,77,109,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">🔴 Poder360 · Diesel +R$1 em 13 estados (27/03)</a>
       <a href="https://blog.clubpetro.com/noticias/vibra-energia-autuada-pela-anp-diesel-com-preco-35x-acima-do-custo/" target="_blank" style="font-family:&#39;IBM Plex Mono&#39;,monospace;font-size:10px;color:#ff4d6d;text-decoration:none;border:1px solid rgba(255,77,109,.3);padding:2px 8px;border-radius:2px" onmouseover="this.style.background=&#39;rgba(255,77,109,.08)&#39;" onmouseout="this.style.background=&#39;transparent&#39;">🔴 ANP autua Vibra Energia (27/03)</a>
     </div>
   </div>
-  <div class="footer-logo">Transportes Braveo · Boletim Diesel · 2026 · Emissão 01/04</div>
+  <div class="footer-logo">Transportes Braveo · Boletim Diesel · 2026 · Emissão 02/04</div>
 </footer>
 
 <script>
@@ -1617,7 +1621,7 @@ function buildTicker(){
     const cls = e.frete_var>0?'ti-u':'ti-d';
     return `<span class="ti"><span class="ti-n">${e.sigla}</span>R$ ${(freteEquip(e.frete_base,getEquip(equipAtivo))/100).toFixed(3)}/km <span class="${cls}">${e.frete_var>0?'▲':'▼'} ${Math.abs(e.frete_var).toFixed(1)}%</span></span>`;
   }).join('');
-  const diesel = `<span class="ti ti-o">⛽ DIESEL S-10: R$ 7,57/L ▲+3,0%</span><span class="ti ti-o">DIESEL B: R$ 7,49/L ▲+3,0%</span>`;
+  const diesel = `<span class="ti ti-o">⛽ DIESEL S-10: R$ 7,57/L ▲+3,0% · IPTL: R$7,10/L (média março)</span><span class="ti ti-o">DIESEL B: R$ 7,49/L ▲+3,0% · Brent: ~US$101/barril</span>`;
   const full = items+diesel+items+diesel;
   document.getElementById('ticker').innerHTML = full;
 }
@@ -2399,13 +2403,17 @@ const DIESEL_SEMANA = [
   {dia:'Sab 21/03', preco:7.35},{dia:'Dom 22/03', preco:7.36},{dia:'Seg 23/03', preco:7.39},
   {dia:'Ter 24/03', preco:7.42},{dia:'Qua 25/03', preco:7.45},{dia:'Qui 26/03', preco:7.49},
   {dia:'Sex 27/03', preco:7.53},
-  {dia:'Sab 28/03', preco:7.57},{dia:'Dom 29/03', preco:7.57},{dia:'Seg 30/03', preco:7.57},
-  {dia:'Ter 31/03', preco:7.57},{dia:'Qua 01/04', preco:7.57},{dia:'Qui 02/04', preco:7.57},
+  {dia:'Sab 28/03', preco:7.57},{dia:'Dom 29/03', preco:7.57},{dia:'Seg 30/03', preco:7.56},
+  {dia:'Ter 31/03', preco:7.55},{dia:'Qua 01/04', preco:7.54},{dia:'Qui 02/04', preco:7.53},
 ];
 // ANP OFICIAL: 22-28/02=R$6,39 · 01-07/03=R$6,15 · 08-14/03=R$6,89 · 15-21/03=R$7,35 S-10
 // ANTT Portaria SUROC nº4/2026 (20/03): nova tabela · ANP 22-28/03=R$7,57/L (+3,0%) · 4ª semana de alta consecutiva
 // 27/03: ANP autua Vibra Energia; governo propõe subsídio extra R$1,20/L importação
-// 01/04: Aguardando próximo levantamento ANP (semana 29/03–04/04) — diesel mantido em R$7,57/L
+// IPTL/Ticket Log (até 27/03): S-10 média março = R$7,10/L (+13,6% vs fev) · 21 mil postos
+// Veloe/Fipe (3ª sem março): S-10 = R$7,47/L · Norte: R$7,39 · Sul: R$6,89
+// 02/04: Brent ~US$101/barril · Petrobras sem novo reajuste · IPTL aponta leve acomodação fin março
+// 01/04: Petrobras estuda autossuficiência em diesel até 2031 (meta 80% até 2030)
+// Próx. levantamento ANP: 04/04/2026 (semana 29/03–04/04)
 
 function fmtR(v, sinal=true){
   const s = v>=0?(sinal?'+':''):'−';
